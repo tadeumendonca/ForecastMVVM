@@ -1,4 +1,4 @@
-package com.example.forecastmvvm.data.response
+package com.example.forecastmvvm.data.db.entity
 
 data class Condition(
         val code: Int,
