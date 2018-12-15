@@ -1,5 +1,4 @@
 package com.example.forecastmvvm.data.repository
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
@@ -26,6 +25,7 @@ class ForecastRepositoryImpl (
     }
     override suspend fun getCurrentWeather(metric: Boolean): LiveData<out UnitSpecificCurrentWeatherEntry> {
         return withContext(Dispatchers.IO){
+            initWeatherData()
             return@withContext if(metric) currentWeatherDAO.getWeatherMetric()
             else currentWeatherDAO.getWeatherImperial()
         }
@@ -48,7 +48,6 @@ class ForecastRepositoryImpl (
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun isFetchedCurrentNeeded(lastFetchTime: ZonedDateTime): Boolean {
         val thirtyMinutesAgo = ZonedDateTime.now().minusMinutes(30)
         return lastFetchTime.isBefore(thirtyMinutesAgo)
